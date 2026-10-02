@@ -1,16 +1,17 @@
 # Points feedback
 
-Questions, feature requests, and bug reports for [points.russlib.ca](https://points.russlib.ca/), the UV27 Vehicle Architecture Explorer.
+Questions, feature requests, and bug reports for [points.russlib.ca](https://points.russlib.ca/).
 
-Use **Feedback** beside the page title, or [open an issue here](https://github.com/russlib/points-feedback/issues/new). A GitHub account is required. Issues and comments are public; don't include private team information or contact details.
+Visitors use **Send feedback** beside the page title and submit directly on the site. No GitHub account is required. Notes are public; the form asks visitors to omit private details.
 
-Please describe what needs clarification, what you would like to do, or the steps that produced a problem. Feedback is reviewed by Russell; submitting a request does not guarantee implementation.
+## Review
 
-## Reviewing requests
+Use the [issues inbox](https://github.com/russlib/points-feedback/issues). Reply to request clarification, apply `question`, `enhancement`, or `bug` labels, and close answered or implemented requests. Anonymous visitors do not receive reply notifications.
 
-- Use the [open issues inbox](https://github.com/russlib/points-feedback/issues) to review incoming requests.
-- Reply in the issue to ask for details or explain a decision.
-- Apply labels such as `question`, `enhancement`, or `bug` to categorize requests.
-- Close an issue when it is answered or implemented. Reopen it if more work is needed.
+## Delivery
 
-This repository contains feedback only. The dashboard is hosted separately on Cloudflare Workers.
+The website saves notes in Cloudflare D1 immediately. `Sync anonymous feedback` runs on a five-minute schedule (GitHub scheduling can be delayed), or manually from Actions. It retrieves up to 20 pending notes, creates issues, and acknowledges them. If delivery fails, saved notes remain pending. A stable marker avoids duplicate issues when an acknowledgement needs retrying.
+
+The workflow uses its repository-scoped `GITHUB_TOKEN` to create issues. The shared `FEEDBACK_SYNC_TOKEN` secret authenticates access to the site's pending/ack endpoints. No GitHub credentials are embedded in the webpage or Worker. Never print these secrets.
+
+GitHub may disable scheduled workflows after 60 days without repository activity. If delivery stops, check Actions and re-enable the workflow; pending notes remain stored on the site. Manual dispatch can run it immediately.
